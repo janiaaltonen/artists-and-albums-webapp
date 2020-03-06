@@ -8,4 +8,6 @@ public interface ArtistList {
 
     List<Artist> getAllArtists();
 
+    boolean addNewArtist(Artist newArtist);
+
 }
