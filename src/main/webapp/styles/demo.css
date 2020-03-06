@@ -1,0 +1,14 @@
+/* this stylesheet is only used for verifying that serving static files works */
+body {
+	max-width: 600px;
+	margin: 0 auto;
+	font-family: sans-serif;
+}
+.external-css {
+	background-color: #90EE90;
+	padding: 10px;
+}
+.time-now {
+	text-align: center;
+	font-size: 2em;
+}
