@@ -27,7 +27,7 @@ public class Main {
         // Asetetaan Tomcatin HTTP-portti. Jos "PORT" löytyy ympäristömuuttujista,
         // käytetään sitä. Muussa tapauksessa portti 8080:
         String webPort = System.getenv().getOrDefault("PORT", "8080");
-        tomcat.setPort(Integer.valueOf(webPort));
+        tomcat.setPort(Integer.parseInt(webPort));
 
         // Luodaan Connector-olio, joka kuuntelee asettamaamme porttia:
         tomcat.getConnector();
