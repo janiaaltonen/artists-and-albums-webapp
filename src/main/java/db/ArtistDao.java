@@ -22,7 +22,7 @@ public class ArtistDao implements ArtistList{
         return ds.getConnection(dbUser, dbPw);
     }
 
-    private void closeResources(AutoCloseable... sqlResources) {
+    protected void closeResources(AutoCloseable... sqlResources) {
         for (AutoCloseable a : sqlResources) {
             if (a != null) {
                 try {
@@ -66,7 +66,7 @@ public class ArtistDao implements ArtistList{
     public boolean addNewArtist(Artist newArtist) {
         boolean successful = false;
         boolean noMatches = false;
-        int rowsAffected = 0;
+        int rowsAffected;
         String sql;
         try {
             connection = getConnection();

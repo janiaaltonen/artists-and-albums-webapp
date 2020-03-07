@@ -22,12 +22,11 @@
         <c:forEach items="${artistList}" var="item">
             <tr id="artist-${item.id}">
                 <td><c:out value="${item.number}"/></td>
-                <td><c:out value="${item.name}"/></td>
+                <td><a href="${pageContext.request.contextPath}/albums?artistId=${item.id}"><c:out value="${item.name}"/></a></td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
-
     <h2> Add new artist to list</h2>
     <form action="/artistList" id="add-new-form" method="post">
         <input id="new-item-name" name="name" required type="text" placeholder=" type artist name here..." autofocus />

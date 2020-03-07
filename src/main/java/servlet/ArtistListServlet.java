@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/artistList")
+@WebServlet("/artists")
 public class ArtistListServlet extends HttpServlet {
     ArtistDao artistDao = new ArtistDao();
 
@@ -36,7 +36,7 @@ public class ArtistListServlet extends HttpServlet {
 
         boolean successful = artistDao.addNewArtist(newArtist);
         if (successful) {
-            resp.sendRedirect("/artistList");
+            resp.sendRedirect("/artists");
         } // else part need to show something like couldn't add artist cause already in list
     }
 }
