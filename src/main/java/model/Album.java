@@ -4,12 +4,14 @@ public class Album {
 
     private long albumId;
     private String title;
-    private long ArtistId;
+    private long artistId;
+    private int number;
 
-    public Album(long albumId, String title, long artistId) {
+    public Album(long albumId, String title, long artistId, int number) {
         this.albumId = albumId;
         this.title = title;
-        ArtistId = artistId;
+        this.artistId = artistId;
+        this.number = number;
     }
 
     public long getAlbumId() {
@@ -29,10 +31,18 @@ public class Album {
     }
 
     public long getArtistId() {
-        return ArtistId;
+        return artistId;
     }
 
     public void setArtistId(long artistId) {
-        ArtistId = artistId;
+        this.artistId = artistId;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 }
