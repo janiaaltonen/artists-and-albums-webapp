@@ -24,4 +24,19 @@ public class ArtistListServlet extends HttpServlet {
         req.setAttribute("artistList", artistList);
         req.getRequestDispatcher("/WEB-INF/artists.jsp").forward(req, resp);
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String name = req.getParameter("name");
+        // mysql db table has auto-increment for ArtistId, so it doesn't matter what ArtistId we use
+        long defaultId = 1;
+        // number is not added to db, so we use default value 1
+        long defaultNumber = 1;
+        Artist newArtist = new Artist(defaultId, name, defaultNumber);
+
+        boolean successful = artistDao.addNewArtist(newArtist);
+        if (successful) {
+            resp.sendRedirect("/artistList");
+        } // else part need to show something like couldn't add artist cause already in list
+    }
 }

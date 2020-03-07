@@ -29,7 +29,7 @@
     </table>
 
     <h2> Add new artist to list</h2>
-    <form action="/addNewArtist" id="add-new-form" method="post">
+    <form action="/artistList" id="add-new-form" method="post">
         <input id="new-item-name" name="name" required type="text" placeholder=" type artist name here..." autofocus />
         <input type="submit" id="add-new-item" value="Add to list" />
     </form>

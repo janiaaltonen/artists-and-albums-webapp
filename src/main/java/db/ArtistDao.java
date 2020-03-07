@@ -56,30 +56,40 @@ public class ArtistDao implements ArtistList{
         return artistList;
     }
 
-    // currently db table doesn't support auto_increment ->
-    // id must be assigned every time
+    /*
+       * Method checks if db table column already contains name that include user inputted name.
+       * If  yes, then check if name in db is equal to name inputted. Comparison is not case-sensitive.
+       * if no matches then new artist is added to db.
+       * At this point i.e. "The" -prefix is not checked -> The Police and Police are dealt as different Artists
+    */
     @Override
     public boolean addNewArtist(Artist newArtist) {
         boolean successful = false;
+        boolean noMatches = false;
         int rowsAffected = 0;
         String sql;
         try {
             connection = getConnection();
-            sql = "SELECT * FROM Artist WHERE name = ?";
+            sql = "SELECT * FROM Artist WHERE name LIKE concat('%', ?, '%')";
             prepStatement = connection.prepareStatement(sql);
-            String artistName = newArtist.getName();
-            int nameLength = artistName.length();
-            String name = artistName.substring(0, 1).toUpperCase() + artistName.substring(1, nameLength);
-            prepStatement.setString(1, name);
+            String artistName = newArtist.getName().trim();
+            prepStatement.setString(1, artistName);
             resultSet = prepStatement.executeQuery();
             if (!resultSet.next()){
-                sql = "INSERT INTO Artist(ArtistId, Name) VALUES(500, ?)";
-                prepStatement = connection.prepareStatement(sql);
-                prepStatement.setString(1, name);
-                rowsAffected = prepStatement.executeUpdate();
+                noMatches = true;
+            } else {
+                while (resultSet.next()) {
+                    noMatches = !resultSet.getString("Name").toLowerCase().equals(artistName.toLowerCase());
+                }
             }
-            if (rowsAffected > 0) {
-                successful = true;
+            if (noMatches) {
+                sql = "INSERT INTO Artist(Name) VALUES(?)";
+                prepStatement = connection.prepareStatement(sql);
+                prepStatement.setString(1, artistName);
+                rowsAffected = prepStatement.executeUpdate();
+                if (rowsAffected > 0) {
+                    successful = true;
+                }
             }
         } catch (SQLException e) {
             System.out.println("SQL Exception " + e.getMessage());
