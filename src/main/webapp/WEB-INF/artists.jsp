@@ -23,6 +23,7 @@
             <tr id="artist-${item.id}">
                 <td><c:out value="${item.number}"/></td>
                 <td><a href="${pageContext.request.contextPath}/albums?artistId=${item.id}"><c:out value="${item.name}"/></a></td>
+                <td><c:out value="${item.albums}"/> </td>
             </tr>
         </c:forEach>
         </tbody>

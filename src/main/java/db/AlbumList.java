@@ -1,7 +1,6 @@
 package db;
 
 import model.Album;
-import model.Artist;
 
 import java.util.List;
 

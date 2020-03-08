@@ -5,53 +5,35 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
 
-public class ArtistDao implements ArtistList{
+public class ArtistDao implements ArtistList {
 
+    MySQLConnector mySql = new MySQLConnector();
     private Connection connection = null;
     private PreparedStatement prepStatement = null;
     private ResultSet resultSet = null;
 
-    protected Connection getConnection() throws SQLException {
-        String url = System.getenv("URL_DB");
-        String dbUser = System.getenv("USER_DB").split(":")[0];
-        String dbPw = System.getenv("USER_DB").split(":")[1];
-        MysqlDataSource ds = new MysqlDataSource();
-        ds.setUrl(url);
-        return ds.getConnection(dbUser, dbPw);
-    }
-
-    protected void closeResources(AutoCloseable... sqlResources) {
-        for (AutoCloseable a : sqlResources) {
-            if (a != null) {
-                try {
-                    a.close();
-                } catch (Exception e) {
-                    System.out.println("Exception " + e.getMessage());
-                }
-            }
-        }
-    }
-
     @Override
     public List<Artist> getAllArtists() {
         List<Artist> artistList = new ArrayList<>();
+        AlbumDao albumDao = new AlbumDao();
         long num = 1;
         try {
-            connection = getConnection();
+            connection = mySql.getConnection();
             String sql = "SELECT * FROM Artist ORDER BY name";
             prepStatement = connection.prepareStatement(sql);
             resultSet = prepStatement.executeQuery();
             while(resultSet.next()) {
-                Artist artist = new Artist(resultSet.getLong("ArtistId"), resultSet.getString("Name"), num);
+                long artistId = resultSet.getLong("ArtistId");
+                int albums = albumDao.getAllAlbums(artistId).size();
+                Artist artist = new Artist(artistId, resultSet.getString("Name"), num, albums);
                 artistList.add(artist);
                 num ++;
             }
         } catch (SQLException e) {
             System.out.println("SQL Exception" + e.getMessage());
         } finally {
-            closeResources(connection, prepStatement, resultSet);
+            mySql.closeResources(connection, prepStatement, resultSet);
         }
         return artistList;
     }
@@ -69,7 +51,7 @@ public class ArtistDao implements ArtistList{
         int rowsAffected;
         String sql;
         try {
-            connection = getConnection();
+            connection = mySql.getConnection();
             sql = "SELECT * FROM Artist WHERE name LIKE concat('%', ?, '%')";
             prepStatement = connection.prepareStatement(sql);
             String artistName = newArtist.getName().trim();
@@ -94,7 +76,7 @@ public class ArtistDao implements ArtistList{
         } catch (SQLException e) {
             System.out.println("SQL Exception " + e.getMessage());
         } finally {
-            closeResources(connection, prepStatement, resultSet);
+            mySql.closeResources(connection, prepStatement, resultSet);
         }
         return successful;
     }

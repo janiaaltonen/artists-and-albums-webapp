@@ -5,11 +5,13 @@ public class Artist {
     private long id;
     private String name;
     private long number;
+    private int albums;
 
-    public Artist(long id, String name, long number) {
+    public Artist(long id, String name, long number, int albums) {
         this.id = id;
         this.name = name;
         this.number = number;
+        this.albums = albums;
     }
 
     public long getId() {
@@ -34,5 +36,13 @@ public class Artist {
 
     public void setNumber(long number) {
         this.number = number;
+    }
+
+    public int getAlbums() {
+        return albums;
+    }
+
+    public void setAlbums(int albums) {
+        this.albums = albums;
     }
 }

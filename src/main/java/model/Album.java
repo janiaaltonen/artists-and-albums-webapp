@@ -6,12 +6,14 @@ public class Album {
     private String title;
     private long artistId;
     private int number;
+    private int tracks;
 
-    public Album(long albumId, String title, long artistId, int number) {
+    public Album(long albumId, String title, long artistId, int number, int tracks) {
         this.albumId = albumId;
         this.title = title;
         this.artistId = artistId;
         this.number = number;
+        this.tracks = tracks;
     }
 
     public long getAlbumId() {
@@ -44,5 +46,13 @@ public class Album {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public int getTracks() {
+        return tracks;
+    }
+
+    public void setTracks(int tracks) {
+        this.tracks = tracks;
     }
 }
