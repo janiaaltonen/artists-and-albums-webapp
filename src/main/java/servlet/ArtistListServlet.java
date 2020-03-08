@@ -32,7 +32,8 @@ public class ArtistListServlet extends HttpServlet {
         long defaultId = 1;
         // number is not added to db, so we use default value 1
         long defaultNumber = 1;
-        Artist newArtist = new Artist(defaultId, name, defaultNumber);
+        int defaultAlbums = 0;
+        Artist newArtist = new Artist(defaultId, name, defaultNumber, defaultAlbums);
 
         boolean successful = artistDao.addNewArtist(newArtist);
         if (successful) {

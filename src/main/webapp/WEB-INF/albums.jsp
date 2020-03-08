@@ -23,6 +23,7 @@
         <tr id="artist-${item.albumId}">
             <td><c:out value="${item.number}"/></td>
             <td><c:out value="${item.title}"/></td>
+            <td><c:out value="${item.tracks}"/></td>
         </tr>
     </c:forEach>
     </tbody>

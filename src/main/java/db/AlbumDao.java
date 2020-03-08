@@ -20,7 +20,9 @@ public class AlbumDao implements AlbumList {
     @Override
     public List<Album> getAllAlbums(long artistId) {
         List<Album> albumList = new ArrayList<>();
+        TrackDao trackDao = new TrackDao();
         int num = 1;
+        int tracks;
         try {
             connection = mySql.getConnection();
             String sql = "SELECT * FROM Album WHERE ArtistId = ?";
@@ -28,7 +30,9 @@ public class AlbumDao implements AlbumList {
             prepStatement.setLong(1, artistId);
             resultSet = prepStatement.executeQuery();
             while (resultSet.next()) {
-                Album album = new Album(resultSet.getLong("AlbumId"), resultSet.getString("Title"), resultSet.getLong("ArtistId"), num);
+                long albumId = resultSet.getLong("AlbumId");
+                tracks = trackDao.getAllTracks(albumId).size();
+                Album album = new Album(resultSet.getLong("AlbumId"), resultSet.getString("Title"), resultSet.getLong("ArtistId"), num, tracks);
                 albumList.add(album);
                 num++;
             }
