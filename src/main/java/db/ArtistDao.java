@@ -16,17 +16,17 @@ public class ArtistDao implements ArtistList {
     @Override
     public List<Artist> getAllArtists() {
         List<Artist> artistList = new ArrayList<>();
-        AlbumDao albumDao = new AlbumDao();
         long num = 1;
         try {
             connection = mySql.getConnection();
-            String sql = "SELECT * FROM Artist ORDER BY name";
+            String sql = "SELECT Artist.ArtistId As ArtistId, Name, Count(title) As Albums " +
+                    "FROM Artist LEFT JOIN Album ON Artist.ArtistId = Album.ArtistId " +
+                    "GROUP BY Artist.ArtistId, Name " +
+                    "ORDER BY name";
             prepStatement = connection.prepareStatement(sql);
             resultSet = prepStatement.executeQuery();
             while(resultSet.next()) {
-                long artistId = resultSet.getLong("ArtistId");
-                int albums = albumDao.getAllAlbums(artistId).size();
-                Artist artist = new Artist(artistId, resultSet.getString("Name"), num, albums);
+                Artist artist = new Artist(resultSet.getLong("ArtistId"), resultSet.getString("Name"), num, resultSet.getInt("Albums"));
                 artistList.add(artist);
                 num ++;
             }
