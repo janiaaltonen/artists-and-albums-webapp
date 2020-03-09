@@ -20,19 +20,19 @@ public class AlbumDao implements AlbumList {
     @Override
     public List<Album> getAllAlbums(long artistId) {
         List<Album> albumList = new ArrayList<>();
-        TrackDao trackDao = new TrackDao();
         int num = 1;
-        int tracks;
         try {
             connection = mySql.getConnection();
-            String sql = "SELECT * FROM Album WHERE ArtistId = ?";
+            String sql = "SELECT Album.AlbumId AS AlbumId, Title, COUNT(Name) AS Tracks " +
+                    "FROM Album LEFT JOIN Track ON Album.AlbumId=Track.AlbumId " +
+                    "WHERE Album.ArtistId = ? " +
+                    "GROUP BY Album.AlbumId, Title " +
+                    "ORDER BY AlbumId";
             prepStatement = connection.prepareStatement(sql);
             prepStatement.setLong(1, artistId);
             resultSet = prepStatement.executeQuery();
             while (resultSet.next()) {
-                long albumId = resultSet.getLong("AlbumId");
-                tracks = trackDao.getAllTracks(albumId).size();
-                Album album = new Album(resultSet.getLong("AlbumId"), resultSet.getString("Title"), resultSet.getLong("ArtistId"), num, tracks);
+                Album album = new Album(resultSet.getLong("AlbumId"), resultSet.getString("Title"), artistId, num, resultSet.getInt("Tracks"));
                 albumList.add(album);
                 num++;
             }
