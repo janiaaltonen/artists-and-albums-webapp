@@ -9,7 +9,7 @@
 <head>
     <meta charset="utf-8">
     <title>Artists</title>
-
+    <script src="/scripts/front.js"></script>
 </head>
 
 <body>
@@ -24,12 +24,13 @@
                 <td><c:out value="${item.number}"/></td>
                 <td><a href="${pageContext.request.contextPath}/albums?artistId=${item.id}"><c:out value="${item.name}"/></a></td>
                 <td><c:out value="${item.albums}"/> </td>
+                <td><button class="remove" onclick="removeArtist(${item.id})">&times;</button></td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
     <h2> Add new artist to list</h2>
-    <form action="/artistList" id="add-new-form" method="post">
+    <form action="/artists" id="add-new-form" method="post">
         <input id="new-item-name" name="name" required type="text" placeholder=" type artist name here..." autofocus />
         <input type="submit" id="add-new-item" value="Add to list" />
     </form>

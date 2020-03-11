@@ -14,7 +14,7 @@ public class ArtistDao implements ArtistList {
     private ResultSet resultSet = null;
 
     @Override
-    public List<Artist> getAllArtists() {
+    public List<Artist> getAllArtistsWithAlbums() {
         List<Artist> artistList = new ArrayList<>();
         long num = 1;
         try {
@@ -36,6 +36,36 @@ public class ArtistDao implements ArtistList {
             mySql.closeResources(connection, prepStatement, resultSet);
         }
         return artistList;
+    }
+
+    @Override
+    public List<Artist> getAllArtists() {
+        List<Artist> artistList = new ArrayList<>();
+        long num = 1;
+        try {
+            connection = mySql.getConnection();
+            String sql = "SELECT * FROM Artist";
+            prepStatement = connection.prepareStatement(sql);
+            resultSet = prepStatement.executeQuery();
+            while (resultSet.next()) {
+                Artist artist = new Artist(resultSet.getLong("ArtistId"), resultSet.getString("Name"), num, 0);
+                artistList.add(artist);
+                num++;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Exception" + e.getMessage());
+        } finally {
+            mySql.closeResources(connection, prepStatement, resultSet);
+        }
+        return artistList;
+    }
+
+    // If db_table gets much bigger, might be more efficient to query db with WHERE ID = ? clause to return only one item
+    @Override
+    public Artist getArtist(long id) {
+        List<Artist> artistList = getAllArtists();
+
+        return artistList.stream().filter(item -> item.getId() == id).findFirst().orElse(null);
     }
 
     /*
@@ -79,5 +109,26 @@ public class ArtistDao implements ArtistList {
             mySql.closeResources(connection, prepStatement, resultSet);
         }
         return successful;
+    }
+
+    @Override
+    public Artist removeArtist(long id) {
+        Artist artist = getArtist(id);
+        int rows = 0;
+        try {
+            connection = mySql.getConnection();
+            String sql = "DELETE FROM Artist WHERE ArtistId = ?";
+            prepStatement = connection.prepareStatement(sql);
+            prepStatement.setLong(1, id);
+            rows = prepStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("SQL Exception: " + e.getMessage());
+        } finally {
+            mySql.closeResources(connection, prepStatement);
+        }
+        if (rows > 0) {
+            return artist;
+        }
+        return null;
     }
 }

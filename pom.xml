@@ -59,5 +59,10 @@
 			<artifactId>jstl</artifactId>
 			<version>${jstl.api.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.3.1</version>
+		</dependency>
 	</dependencies>
 </project>
