@@ -16,7 +16,11 @@
     <h1> List of all the artists</h1>
     <table>
         <thead>
-        <tr><th>Name</th></tr>
+        <tr>
+            <th> # </th>
+            <th> Artist </th>
+            <th> Albums </th>
+        </tr>
         </thead>
         <tbody>
         <c:forEach items="${artistList}" var="item">

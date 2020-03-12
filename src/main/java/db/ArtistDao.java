@@ -87,9 +87,11 @@ public class ArtistDao implements ArtistList {
             String artistName = newArtist.getName().trim();
             prepStatement.setString(1, artistName);
             resultSet = prepStatement.executeQuery();
-            if (!resultSet.next()){
+            if (!resultSet.next()) {
                 noMatches = true;
             } else {
+                // moves the resultSet cursor back to start because previous operation consumed the first row
+                resultSet.beforeFirst();
                 while (resultSet.next()) {
                     noMatches = !resultSet.getString("Name").toLowerCase().equals(artistName.toLowerCase());
                 }
