@@ -78,4 +78,15 @@ class ArtistDaoTest {
         inserted = artistDao.addNewArtist(artist);
         assertFalse(inserted);
     }
+
+    @Test
+    void getNumberOfAlbums() {
+        List<Artist> allArtists = artistDao.getAllArtistsWithAlbums();
+        int albums = 0;
+        for (Artist a : allArtists) {
+            albums += a.getAlbums();
+        }
+        assertEquals(6, albums);
+    }
+    
 }
