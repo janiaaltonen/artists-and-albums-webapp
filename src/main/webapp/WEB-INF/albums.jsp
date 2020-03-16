@@ -13,10 +13,14 @@
 </head>
 
 <body>
-<h1> List of all the albums</h1>
+<h1 class="artist"> <c:out value="${artist.name}"/></h1>
 <table>
     <thead>
-    <tr><th>Name</th></tr>
+    <tr>
+        <th> # </th>
+        <th> Title </th>
+        <th> Tracks </th>
+    </tr>
     </thead>
     <tbody>
     <c:forEach items="${albumList}" var="item">

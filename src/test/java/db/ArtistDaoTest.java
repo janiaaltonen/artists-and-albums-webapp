@@ -88,5 +88,4 @@ class ArtistDaoTest {
         }
         assertEquals(6, albums);
     }
-    
 }
