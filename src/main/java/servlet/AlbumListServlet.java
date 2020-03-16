@@ -1,5 +1,6 @@
 package servlet;
 
+import com.google.gson.Gson;
 import db.AlbumDao;
 import db.ArtistDao;
 import model.Album;
@@ -26,5 +27,20 @@ public class AlbumListServlet extends HttpServlet {
         req.setAttribute("albumList", albumList);
         req.setAttribute("artist", artist);
         req.getRequestDispatcher("/WEB-INF/albums.jsp").forward(req, resp);
+    }
+
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        long id = Long.parseLong(req.getParameter("id"));
+        Album album = albumDao.removeAlbum(id);
+        if(album != null) {
+            String json = new Gson().toJson(album);
+            resp.setContentType("application/json; charset=UTF-8");
+            resp.getWriter().println(json);
+        } else {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            resp.getWriter().print("not found");
+        }
     }
 }

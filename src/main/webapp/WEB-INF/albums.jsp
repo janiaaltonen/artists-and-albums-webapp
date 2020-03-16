@@ -9,11 +9,11 @@
 <head>
     <meta charset="utf-8">
     <title>Artists</title>
-
+    <script src="/scripts/front.js"></script>
 </head>
 
 <body>
-<h1 class="artist"> <c:out value="${artist.name}"/></h1>
+<h1 class="artist"> <c:out value="${artist.name}"/> albums</h1>
 <table>
     <thead>
     <tr>
@@ -24,10 +24,13 @@
     </thead>
     <tbody>
     <c:forEach items="${albumList}" var="item">
-        <tr id="artist-${item.albumId}">
+        <tr id="album-${item.albumId}">
             <td><c:out value="${item.number}"/></td>
             <td><c:out value="${item.title}"/></td>
             <td><c:out value="${item.tracks}"/></td>
+            <!-- Foreign key constraint need to be handled before this will be shown
+            <td><button class="remove" onclick="removeAlbum(${item.albumId})">&times;</button></td>
+            -->
         </tr>
     </c:forEach>
     </tbody>

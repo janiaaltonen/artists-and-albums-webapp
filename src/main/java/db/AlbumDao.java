@@ -43,4 +43,46 @@ public class AlbumDao implements AlbumList {
         }
         return albumList;
     }
+
+    @Override
+    public Album getAlbum(long albumId) {
+        Album album = null;
+        try {
+            connection = mySql.getConnection();
+            String sql = "SELECT * FROM Album WHERE AlbumId = ?";
+            prepStatement = connection.prepareStatement(sql);
+            prepStatement.setLong(1, albumId);
+            resultSet = prepStatement.executeQuery();
+            while (resultSet.next()) {
+                // number of tracks set to 0 at this point. Could have retrieved them from db but not time to implement it now
+                album = new Album(resultSet.getLong("AlbumId"), resultSet.getString("Title"), resultSet.getLong("ArtistId"), 0, 0);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Exception" + e.getMessage());
+        } finally {
+            mySql.closeResources(connection, prepStatement, resultSet);
+        }
+        return album;
+    }
+    // Foreign key constraint need to be handled before this works
+    @Override
+    public Album removeAlbum(long albumId) {
+        Album album = getAlbum(albumId);
+        int rows = 0;
+        try {
+            connection = mySql.getConnection();
+            String sql = "DELETE FROM Album WHERE AlbumId = ?";
+            prepStatement = connection.prepareStatement(sql);
+            prepStatement.setLong(1, albumId);
+            rows = prepStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("SQL Exception: " + e.getMessage());
+        } finally {
+            mySql.closeResources(connection, prepStatement);
+        }
+        if (rows > 0) {
+            return album;
+        }
+        return null;
+    }
 }
