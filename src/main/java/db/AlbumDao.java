@@ -64,7 +64,11 @@ public class AlbumDao implements AlbumList {
         }
         return album;
     }
-    // Foreign key constraint need to be handled before this works
+    /* Foreign Key doesn't have ON DELETE CASCADE
+        -> Every row has to be deleted first from other tables where 'AlbumId' is FK
+        -> Delete rows from Track_Table and rows from tables where 'TrackId' is FK
+        -> No time to implement in course's time limits
+    */
     @Override
     public Album removeAlbum(long albumId) {
         Album album = getAlbum(albumId);

@@ -24,12 +24,21 @@
         </thead>
         <tbody>
         <c:forEach items="${artistList}" var="item">
-            <tr id="artist-${item.id}">
-                <td><c:out value="${item.number}"/></td>
-                <td><a href="${pageContext.request.contextPath}/albums?artistId=${item.id}"><c:out value="${item.name}"/></a></td>
-                <td><c:out value="${item.albums}"/> </td>
-                <td><button class="remove" onclick="removeArtist(${item.id})">&times;</button></td>
-            </tr>
+            <c:if test="${item.albums > 0}">
+                <tr id="artist-${item.id}">
+                    <td><c:out value="${item.number}"/></td>
+                    <td><a href="${pageContext.request.contextPath}/albums?artistId=${item.id}"><c:out value="${item.name}"/></a></td>
+                    <td><c:out value="${item.albums}"/> </td>
+                </tr>
+            </c:if>
+            <c:if test="${item.albums == 0}">
+                <tr id="artist-${item.id}">
+                    <td><c:out value="${item.number}"/></td>
+                    <td><c:out value="${item.name}"/></td>
+                    <td><c:out value="${item.albums}"/> </td>
+                    <td><button class="remove" onclick="removeArtist(${item.id})">&times;</button></td>
+                </tr>
+            </c:if>
         </c:forEach>
         </tbody>
     </table>

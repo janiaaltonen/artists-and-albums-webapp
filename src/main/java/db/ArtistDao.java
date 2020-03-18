@@ -113,6 +113,12 @@ public class ArtistDao implements ArtistList {
         return successful;
     }
 
+    /* Foreign Key doesn't have ON DELETE CASCADE
+        -> Every row has to be deleted first from other tables where 'ArtistId' is FK
+        -> Delete rows from Album_Table and rows from tables where 'AlbumId' is FK
+        -> No time to implement in course's time limits
+        -> only user added artists or existing artists with 0 albums can be deleted at this point
+    */
     @Override
     public Artist removeArtist(long id) {
         Artist artist = getArtist(id);

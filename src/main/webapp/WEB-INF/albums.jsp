@@ -13,7 +13,7 @@
 </head>
 
 <body>
-<h1 class="artist"> <c:out value="${artist.name}"/> albums</h1>
+<h1 class="artist"> Albums of <c:out value="${artist.name}"/> </h1>
 <table>
     <thead>
     <tr>
