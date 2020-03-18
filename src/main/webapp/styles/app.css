@@ -1,8 +1,20 @@
 /* this stylesheet is only used for verifying that serving static files works */
 body {
 	max-width: 600px;
-	margin: 0 auto;
+	margin: 0 100px;
 	font-family: sans-serif;
+}
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+td, th {
+	border: 1px solid #3e4652;
+	text-align: left;
+	padding: 8px;
+}
+tr:nth-child(even) {
+	background-color: #dddddd;
 }
 .external-css {
 	background-color: #90EE90;

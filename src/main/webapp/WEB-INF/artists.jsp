@@ -9,7 +9,8 @@
 <head>
     <meta charset="utf-8">
     <title>Artists</title>
-    <script src="/scripts/front.js"></script>
+    <script src="/scripts/app.js"></script>
+    <link rel="stylesheet" href="/styles/app.css">
 </head>
 
 <body>
