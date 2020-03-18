@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.util.List;
+import com.google.gson.Gson;
 
 import db.ArtistDao;
 import model.Artist;
@@ -17,7 +18,7 @@ public class ArtistListServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Artist> artistList = artistDao.getAllArtists();
+        List<Artist> artistList = artistDao.getAllArtistsWithAlbums();
 
         // passing the artist list as an attribute
         // forward the request to the artists.jsp page
@@ -39,5 +40,19 @@ public class ArtistListServlet extends HttpServlet {
         if (successful) {
             resp.sendRedirect("/artists");
         } // else part need to show something like couldn't add artist cause already in list
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        long id = Long.parseLong(req.getParameter("id"));
+        Artist artist = artistDao.removeArtist(id);
+        if(artist != null) {
+            String json = new Gson().toJson(artist);
+            resp.setContentType("application/json; charset=UTF-8");
+            resp.getWriter().println(json);
+        } else {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            resp.getWriter().print("not found");
+        }
     }
 }

@@ -20,19 +20,19 @@ public class AlbumDao implements AlbumList {
     @Override
     public List<Album> getAllAlbums(long artistId) {
         List<Album> albumList = new ArrayList<>();
-        TrackDao trackDao = new TrackDao();
         int num = 1;
-        int tracks;
         try {
             connection = mySql.getConnection();
-            String sql = "SELECT * FROM Album WHERE ArtistId = ?";
+            String sql = "SELECT Album.AlbumId AS AlbumId, Title, COUNT(Name) AS Tracks " +
+                    "FROM Album LEFT JOIN Track ON Album.AlbumId=Track.AlbumId " +
+                    "WHERE Album.ArtistId = ? " +
+                    "GROUP BY Album.AlbumId, Title " +
+                    "ORDER BY AlbumId";
             prepStatement = connection.prepareStatement(sql);
             prepStatement.setLong(1, artistId);
             resultSet = prepStatement.executeQuery();
             while (resultSet.next()) {
-                long albumId = resultSet.getLong("AlbumId");
-                tracks = trackDao.getAllTracks(albumId).size();
-                Album album = new Album(resultSet.getLong("AlbumId"), resultSet.getString("Title"), resultSet.getLong("ArtistId"), num, tracks);
+                Album album = new Album(resultSet.getLong("AlbumId"), resultSet.getString("Title"), artistId, num, resultSet.getInt("Tracks"));
                 albumList.add(album);
                 num++;
             }
@@ -42,5 +42,51 @@ public class AlbumDao implements AlbumList {
             mySql.closeResources(connection, prepStatement, resultSet);
         }
         return albumList;
+    }
+
+    @Override
+    public Album getAlbum(long albumId) {
+        Album album = null;
+        try {
+            connection = mySql.getConnection();
+            String sql = "SELECT * FROM Album WHERE AlbumId = ?";
+            prepStatement = connection.prepareStatement(sql);
+            prepStatement.setLong(1, albumId);
+            resultSet = prepStatement.executeQuery();
+            while (resultSet.next()) {
+                // number of tracks set to 0 at this point. Could have retrieved them from db but not time to implement it now
+                album = new Album(resultSet.getLong("AlbumId"), resultSet.getString("Title"), resultSet.getLong("ArtistId"), 0, 0);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Exception" + e.getMessage());
+        } finally {
+            mySql.closeResources(connection, prepStatement, resultSet);
+        }
+        return album;
+    }
+    /* Foreign Key doesn't have ON DELETE CASCADE
+        -> Every row has to be deleted first from other tables where 'AlbumId' is FK
+        -> Delete rows from Track_Table and rows from tables where 'TrackId' is FK
+        -> No time to implement in course's time limits
+    */
+    @Override
+    public Album removeAlbum(long albumId) {
+        Album album = getAlbum(albumId);
+        int rows = 0;
+        try {
+            connection = mySql.getConnection();
+            String sql = "DELETE FROM Album WHERE AlbumId = ?";
+            prepStatement = connection.prepareStatement(sql);
+            prepStatement.setLong(1, albumId);
+            rows = prepStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("SQL Exception: " + e.getMessage());
+        } finally {
+            mySql.closeResources(connection, prepStatement);
+        }
+        if (rows > 0) {
+            return album;
+        }
+        return null;
     }
 }
