@@ -16,6 +16,20 @@ td, th {
 tr:nth-child(even) {
 	background-color: #dddddd;
 }
+
+.form {
+	display: none;
+}
+
+span {
+	cursor: default;
+	color: blue;
+	text-decoration: underline;
+	padding-bottom: 10px;
+}
+span:hover {
+	text-decoration: none;
+}
 .external-css {
 	background-color: #90EE90;
 	padding: 10px;

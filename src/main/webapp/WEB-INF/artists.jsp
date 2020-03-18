@@ -15,6 +15,11 @@
 
 <body>
     <h1> List of all the artists</h1>
+    <p> <span onclick="showForm()"> Add new artist to list </span> </p>
+    <form class="form" action="/artists" id="add_new_form" method="post">
+        <input id="new-item-name" name="name" required type="text" placeholder=" type artist name here..." autofocus />
+        <input type="submit" id="add-new-item" value="Add to list" />
+    </form>
     <table>
         <thead>
         <tr>
@@ -43,11 +48,6 @@
         </c:forEach>
         </tbody>
     </table>
-    <h2> Add new artist to list</h2>
-    <form action="/artists" id="add-new-form" method="post">
-        <input id="new-item-name" name="name" required type="text" placeholder=" type artist name here..." autofocus />
-        <input type="submit" id="add-new-item" value="Add to list" />
-    </form>
 
 </body>
 </html>
