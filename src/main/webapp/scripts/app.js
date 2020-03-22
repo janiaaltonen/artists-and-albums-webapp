@@ -23,3 +23,14 @@ async function removeAlbum(id) {
         alert('An error occurred. Please check the consoles of the browser and the backend.');
     }
 }
+
+function showForm() {
+    let form = document.getElementById("add_new_form");
+    if (form.style.display !== "inline") {
+        form.style.paddingBottom = "10px";
+        form.style.display = "inline";
+    } else {
+        form.style.display = "none";
+    }
+
+}
