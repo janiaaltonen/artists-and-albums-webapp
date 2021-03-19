@@ -9,7 +9,7 @@
 	<description>Skeleton project with Maven, IntelliJ, embedded Tomcat, JSP and JSTL</description>
 
 	<properties>
-		<tomcat.version>9.0.31</tomcat.version>
+		<tomcat.version>10.0.4</tomcat.version>
 		<maven.compiler.target>1.9</maven.compiler.target>
 		<maven.compiler.source>1.9</maven.compiler.source>
 			<mysql.driver.version>8.0.19</mysql.driver.version>
