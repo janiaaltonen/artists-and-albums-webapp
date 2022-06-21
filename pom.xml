@@ -12,7 +12,7 @@
 		<tomcat.version>9.0.31</tomcat.version>
 		<maven.compiler.target>1.9</maven.compiler.target>
 		<maven.compiler.source>1.9</maven.compiler.source>
-			<mysql.driver.version>8.0.19</mysql.driver.version>
+			<mysql.driver.version>8.0.28</mysql.driver.version>
 			<junit.jupiter.version>5.6.0</junit.jupiter.version>
 			<jstl.api.version>1.2</jstl.api.version>
 	</properties>
